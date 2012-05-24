@@ -1,0 +1,93 @@
+<html>
+        <head>
+                <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+
+                <style type="text/css">
+                        body {
+                                background: #000;
+                                color: white;
+                        }
+                        </style>
+
+        <script type="text/javascript">
+                var TIME_TO_STAY = 20;
+
+				// EDIT THIS ARRAY OF URLS 
+                var urls = [
+                        [ 'Google', 'http://www.google.com', 'white' ],
+                        [ 'Le Monde', 'http://lemonde.fr', 'white' ],
+                        [ 'News', 'http://news.google.com', 'white']
+                ];
+
+                function start_clock() {
+
+                        // hours
+                        setInterval( function() {
+                                var hours = new Date().getHours();
+                                $('#hours').html((hours < 10 ? '0' : '') + hours );
+                        }, 1000);
+
+                        // minutes
+                        setInterval( function() {
+                                var minutes = new Date().getMinutes();
+                                $('#minutes').html((minutes < 10 ? '0' : '' ) + minutes);
+                        }, 1000);
+
+                        // seconds
+                        setInterval( function() {
+                                var seconds = new Date().getSeconds();
+                                $('#seconds').html( (seconds < 10 ? '0' : '') + seconds );
+                        }, 1000);
+                        
+                        setInterval( function() {
+                                elapsed = parseInt($('#elapsed').html()) - 1;
+                                $('#elapsed').html(elapsed);
+                        }, 1000);
+                }
+
+                var index = 0;
+
+                function reload_container() {
+                        if (index == urls.length) {
+                                index = 0;
+                        }
+
+                        var title = urls[index][0];
+                        var url = urls[index][1];
+                        var color = urls[index][2];
+
+                        index++;
+                        
+                        $('#title').html('<a style="text-decoration: none; color: '+color+';" href="'+url+'">'+title+'</a>');
+                        $('#main_container').attr('src', url);
+                        $('#elapsed').html(TIME_TO_STAY);
+                        return false;
+                }
+
+setInterval("reload_container()", TIME_TO_STAY * 1000);
+
+                function init() {
+                        start_clock();
+                        reload_container();
+                }
+
+        </script>
+
+        </head>
+
+        <body onload="init();">
+
+                <div style="padding: 2px; background-color: #000; color: #fff; position: absolute; top: 0; left: 2; font-weight: bold; font-family: sans-serif; font-size: 30px;">
+                        <span id="elapsed"></span>
+                </div>
+
+                <div style="padding: 2px; background-color: #000; color: #fff; position: absolute; top: 0; right: 2; font-weight: bold; font-family: sans-serif; font-size: 30px;">
+                        <span style="margin: 0; padding: 0;" id="hours"></span>:<span style="margin: 0; padding: 0;" id="minutes"></span>
+                </div>
+
+                <div style="font-weight: bold; font-family: sans-serif; font-size: 34px; text-align: center; font" id="title"></div>
+                <iframe border=0 src="" id="main_container" width="100%" height="100%"></iframe>
+
+
+        </body>
+</html>
